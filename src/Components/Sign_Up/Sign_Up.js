@@ -62,7 +62,7 @@ const Sign_Up = () => {
         <div className="signup">
         <h1>Sign Up</h1>
         <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-            Already have an account? <Link to="/login">Login here</Link>
+            Already have an account? <Link to="/login" style={{ color: "#2190FF" }}>Login here</Link>
             </p>
             <br />
         <div className="signup-form">

@@ -1,71 +1,106 @@
-import React, { useState } from 'react';
-import './Login.css';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "./Login.css";            // ← import your CSS here
+import { API_URL } from "../../config";
 
-function Login() {
-  const initialFormState = { email: '', password: '' };
-  const [form, setForm] = useState(initialFormState);
-  const [error, setError] = useState('');
+const Login = () => {
+  // State variables for email and password
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!form.email.includes('@')) {
-      setError('Please enter a valid email address.');
-      return;
+  // If already logged in, redirect home
+  useEffect(() => {
+    if (sessionStorage.getItem("auth-token")) {
+      navigate("/");
     }
-    setError('');
-    alert('Logged in successfully!');
-    // perform login
-  };
+  }, [navigate]);
 
-    const handleReset = () => {
-    setForm(initialFormState);
-    setError('');
+  // Handle form submit
+  const login = async (e) => {
+    e.preventDefault();
+    const res = await fetch(`${API_URL}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    const json = await res.json();
+    if (json.authtoken) {
+      sessionStorage.setItem("auth-token", json.authtoken);
+      sessionStorage.setItem("email", email);
+      navigate("/");
+      window.location.reload();
+    } else {
+      if (json.errors) {
+        json.errors.forEach((err) => alert(err.msg));
+      } else {
+        alert(json.error);
+      }
+    }
   };
 
   return (
     <div className="container">
+      {/* this “login” class gives your green card, padding, shadow, etc */}
       <div className="login">
         <h2>Login</h2>
-        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-          Are you a new member? <a href="/signup" style={{ color: '#2190FF' }}>Sign Up Here</a>
+        <div className="login-text">
+          Are you a new member?&nbsp;
+          <Link to="/signup" style={{ color: "#2190FF" }}>
+            Sign Up Here
+          </Link>
         </div>
+        <br />
+        <div className="login-form">
+          <form onSubmit={login}>
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                name="email"
+                id="email"
+                className="form-control"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
 
-        <form onSubmit={handleSubmit} className="login-form">
-          <div className="form-group">
-            <label>Email</label>
-            <input type="email" name="email" placeholder="Enter Your Email" required value={form.email} onChange={handleChange} className="form-control" />
-          </div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                name="password"
+                id="password"
+                className="form-control"
+                placeholder="Enter your password"
+                required
+              />
+            </div>
 
-          <div className="form-group">
-            <label>Password</label>
-            <input type="password" name="password" placeholder="Enter Your Password" required value={form.password} onChange={handleChange} className="form-control" />
-          </div>
-          
-          <div className="blob-cont">
-            <div className="blue blob"></div>
-          </div>
-          <div className="blob-cont">
-            <div className="blue1 blob"></div>
-          </div>
-
-          {error && <small className="error">{error}</small>}
-
-          <div className="btn-group">
-            <button type="submit" className="btn btn-primary">Login</button>
-            <button type="reset" onClick={handleReset} className="btn btn-danger">Reset</button>
-          </div>
-
-          <div style={{ textAlign: 'center', marginTop: '15px' }} className="login-text">
-            Forgot Password?
-          </div>
-        </form>
+            <div className="btn-group">
+              <button
+                type="submit"
+                className="btn btn-primary mb-2 mr-1 waves-effect waves-light"
+              >
+                Login
+              </button>
+            </div>
+          </form>
+            <div className="blob-cont">
+                <div className="blue blob"></div>
+            </div>
+            <div className="blob-cont">
+                <div className="blue1 blob"></div>
+            </div>
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default Login;
