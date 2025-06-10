@@ -136,20 +136,31 @@ li {
 }
 
 /* Blob */
-
-
-/* Blobs */
-.flex-hero .blob-cont {
+.blob-cont {
     justify-content: center;
     align-items: center;
-    position: static;
+    position: fixed;
+    z-index: -1;
     margin: 10px;
 }
 
+.blob-cont:nth-child(1) {
+    top: 10%;
+    left: 5%;
+  }
+  
+  .blob-cont:nth-child(2) {
+    bottom: 10%;
+    right: 5%;
+  }
 
 .blob {
-    border-radius: 100px;
-    filter: blur(80px);
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    opacity: 0.5;
+    filter: blur(60px);
+    position: absolute;
 }
 
 .blue {
