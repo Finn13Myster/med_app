@@ -81,8 +81,12 @@ body {
 
 /* Login button */
 .btn-primary {
-  background-color: #00EB33;
+  background-color: #00ff37;
   color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #00b126;
 }
 
 /* Reset button */

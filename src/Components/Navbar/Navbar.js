@@ -54,6 +54,9 @@ function Navbar() {
         <li className="link">
           <Link to="/instant-consultation">Instant Consultation</Link>
         </li>
+        <li className="link">
+          <Link to="/ReviewForm">Reviews</Link>
+        </li>
 
         {!isLoggedIn ? (
           <>
