@@ -1,103 +1,146 @@
 import React, { useState } from 'react';
-import './Sign_Up.css';
+import './Sign_Up.css'
+import { Link, useNavigate } from 'react-router-dom';
+import { API_URL } from '../../config';
 
-function Sign_Up() {
-  const initialFormState = { name: '', phone: '', email: '', password: '' };
-  const [form, setForm] = useState(initialFormState);
-  const [errors, setErrors] = useState({});
+// Function component for Sign Up form
+const Sign_Up = () => {
+    // State variables using useState hook
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [password, setPassword] = useState('');
+    const [showerr, setShowerr] = useState(''); // State to show error messages
+    const navigate = useNavigate(); // Navigation hook from react-router
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+    // Function to handle form submission
+    const register = async (e) => {
+        e.preventDefault(); // Prevent default form submission
 
-  const validate = () => {
-    const errs = {};
-    if (!form.phone.match(/^\d{10}$/)) {
-      errs.phone = 'Phone number must be exactly 10 digits';
-    }
-    if (!form.email.includes('@')) {
-      errs.email = 'Invalid email';
-    }
-    if (!form.password || form.password.length < 6) {
-      errs.password = 'Password must be at least 6 characters';
-    }
-    return errs;
-  };
+        // Clear previous error
+        setShowerr('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length === 0) {
-      alert('Form submitted successfully!');
-      // perform API call
-    } else {
-      setErrors(validationErrors);
-    }
-  };
+        // API Call to register user
+        const response = await fetch(`${API_URL}/api/auth/register`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                password: password,
+                phone: phone,
+            }),
+        });
 
-  const handleReset = () => {
-    setForm(initialFormState);
-    setErrors({});
-  };
+        const json = await response.json(); // Parse the response JSON
 
-  return (
+        if (json.authtoken) {
+            // Store user data in session storage
+            sessionStorage.setItem("auth-token", json.authtoken);
+            sessionStorage.setItem("name", name);
+            sessionStorage.setItem("phone", phone);
+            sessionStorage.setItem("email", email);
+
+            // Redirect user to home page
+            navigate("/");
+            window.location.reload(); // Refresh the page to update navbar and other UI
+        } else {
+            if (json.errors) {
+                // Show first error message (or you can customize to show all)
+                setShowerr(json.errors[0].msg);
+            } else {
+                setShowerr(json.error || 'Registration failed. Please try again.');
+            }
+        }
+    };
+
+    // JSX to render the Sign Up form
+    return (
     <div className="container">
-      <div className="signup">
+        <div className="signup">
         <h1>Sign Up</h1>
-        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-          Already a member? <a href="/login" style={{ color: '#2190FF' }}>Login</a>
+        <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            Already have an account? <Link to="/login">Login here</Link>
+            </p>
+            <br />
+        <div className="signup-form">
+            <form method="POST" onSubmit={register}>
+            <div className="form-group">
+                <label htmlFor="name">Name</label>
+                <input
+                    value={name}
+                    type="text"
+                    onChange={(e) => setName(e.target.value)}
+                    name="name"
+                    id="name"
+                    className="form-control"
+                    placeholder="Enter your name"
+                    aria-describedby="helpId"
+                />
+                </div>
+
+                <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    type="email"
+                    name="email"
+                    id="email"
+                    className="form-control"
+                    placeholder="Enter your email"
+                    aria-describedby="helpId"
+                />
+                {showerr && <div className="err" style={{ color: "red" }}>{showerr}</div>}
+                </div>
+
+                <div className="form-group">
+                <label htmlFor="phone">Phone</label>
+                <input
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    type="tel"
+                    name="phone"
+                    id="phone"
+                    className="form-control"
+                    placeholder="Enter your phone number"
+                    aria-describedby="helpId"
+                />
+                </div>
+
+                <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <input
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    name="password"
+                    id="password"
+                    type="password"
+                    className="form-control"
+                    placeholder="Enter your password"
+                    aria-describedby="helpId"
+                />
+                </div>
+
+            {showerr && <div className="error">{showerr}</div>}
+
+            <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem' }}>
+                Sign Up
+            </button>
+            </form>
+            <div className="blob-cont">
+                <div className="blue blob"></div>
+            </div>
+            <div className="blob-cont">
+                <div className="blue1 blob"></div>
+            </div>
         </div>
-
-        <form onSubmit={handleSubmit} className="signup-form">
-          <div className="form-group">
-            <label>Name</label>
-            <input type="text" name="name" placeholder="Enter Your Name" required value={form.name} onChange={handleChange} className="form-control" />
-          </div>
-
-          <div className="form-group">
-            <label>Phone</label>
-            <input type="tel" name="phone" placeholder="Enter Your Phone Number" required pattern="\d{10}" value={form.phone} onChange={handleChange} 
-                onInvalid={(e) => e.target.setCustomValidity("Phone number must be exactly 10 digits")}
-                onInput={(e) => e.target.setCustomValidity("")} className="form-control" />
-            {errors.phone && <small className="error">{errors.phone}</small>}
-          </div>
-
-          <div className="form-group">
-            <label>Email</label>
-            <input type="email" name="email" placeholder="Enter Your Email" required value={form.email} onChange={handleChange} className="form-control" />
-            {errors.email && <small className="error">{errors.email}</small>}
-          </div>
-
-          <div className="form-group">
-            <label>Password</label>
-            <input type="password" name="password" placeholder="Enter Your Password" minLength={6} required value={form.password} onChange={handleChange} onInvalid={(e) => {
-                    if (e.target.validity.valueMissing) {
-                    e.target.setCustomValidity("Please enter your password.");
-                    } else if (e.target.validity.tooShort) {
-                    e.target.setCustomValidity("Password must be at least 6 characters.");
-                    } else {
-                    e.target.setCustomValidity("");
-                    }
-                }}
-                onInput={(e) => e.target.setCustomValidity("")}
-                className="form-control"/>
-            {errors.password && <small className="error">{errors.password}</small>}
-          </div>
-
-          <div className="btn-group">
-            <button type="submit" className="btn btn-primary">Submit</button>
-            <button type="reset" onClick={handleReset} className="btn btn-danger">Reset</button>
-          </div>
-        </form>
-        <div className="blob-cont">
-            <div className="blue blob"></div>
-          </div>
-          <div className="blob-cont">
-            <div className="blue1 blob"></div>
-          </div>
-      </div>
+        </div>
     </div>
-  );
-}
+    );
 
-export default Sign_Up;
+    }
+
+    export default Sign_Up;
