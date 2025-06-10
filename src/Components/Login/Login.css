@@ -8,7 +8,7 @@ body {
 
 /* Container to center the login card */
 .container {
-  max-width: 900px;
+  max-width: 600px;
   margin: 0 auto;
   padding: 40px;
   margin-top: 5%;
@@ -17,7 +17,7 @@ body {
 /* Login card styling */
 .login {
   background-color: #25FFA8;
-  padding: 40px 60px;
+  padding: 35px 50px;
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
@@ -47,6 +47,7 @@ body {
   margin-bottom: 5px;
   font-weight: bold;
   font-family: 'Poppins', sans-serif;
+  text-align: justify;
 }
 
 /* Input fields */
@@ -93,4 +94,43 @@ body {
 /* Forgot Password section */
 .login-text {
   font-size: 1rem;
+}
+
+/* Background */
+.blob-cont {
+    justify-content: center;
+    align-items: center;
+    position: static;
+    margin: 10px;
+}
+
+
+.blob {
+    border-radius: 100px;
+    filter: blur(80px);
+}
+
+.blue {
+    background-color: #00FF62;
+    position: absolute;
+    top:0;
+    left: 0;
+    right: 55%;
+    bottom: 25%;
+    margin: auto;
+    height: 150px;
+    width: 200px;
+    animation: blobani 8s infinite ease;
+}
+.blue1 {
+    background-color: #00FF99;
+    position: absolute;
+    top:0;
+    left: 0;
+    right: -55%;
+    bottom: -25%;
+    margin: auto;
+    height: 150px;
+    width: 200px;
+    animation: blobani 8s infinite ease;
 }
