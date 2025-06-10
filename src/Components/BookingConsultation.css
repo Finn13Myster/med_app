@@ -1,0 +1,79 @@
+.searchpage-container {
+    max-width: 1200px;
+    margin: auto;
+    margin-top:10%;
+    color: #414146;
+    padding: 0 20px;
+    position: static;
+    width: 100%;
+}
+.searchpage-container img {
+    max-width: 100%;
+}
+.search-results-container .doctorcard{
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 18px;
+    border-radius: 4px;
+    background-color: #fff;
+
+}
+
+.search-results-container>h2 {
+    text-align: left;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.search-results-container>h3 {
+    margin-top: 12px;
+    color: #2d2d32;
+    text-align: left;
+    font-size: 15px;
+}
+/* Blobs */
+.blob-cont {
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: -1;
+    margin: 10px;
+}
+
+
+.blob {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  opacity: 0.5;
+  filter: blur(60px);
+  position: absolute;
+}
+
+.blue {
+    background-color: #00FF62;
+    position: fixed;
+    top:0;
+    left: 0;
+    right: 55%;
+    bottom: 25%;
+    margin: auto;
+    height: 150px;
+    width: 200px;
+    animation: blobani 8s infinite ease;
+}
+.blue1 {
+    background-color: #00FF99;
+    position: fixed;
+    top:0;
+    left: 0;
+    right: -55%;
+    bottom: -25%;
+    margin: auto;
+    height: 150px;
+    width: 200px;
+    animation: blobani 8s infinite ease;
+}
