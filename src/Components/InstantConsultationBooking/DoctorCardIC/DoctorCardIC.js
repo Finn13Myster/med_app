@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import './DoctorCardIC.css';
-import AppointmentFormIC from '../AppointmentFormIC/AppointmentFormIC'
+import AppointmentFormIC from '../AppointmentFormIC/AppointmentFormIC';
 import { v4 as uuidv4 } from 'uuid';
-
 
 const DoctorCardIC = ({ name, speciality, experience, ratings, profilePic }) => {
   const [showModal, setShowModal] = useState(false);
@@ -17,6 +16,21 @@ const DoctorCardIC = ({ name, speciality, experience, ratings, profilePic }) => 
   const handleCancel = (appointmentId) => {
     const updatedAppointments = appointments.filter((appointment) => appointment.id !== appointmentId);
     setAppointments(updatedAppointments);
+
+    // Remove from localStorage
+    const doctorData = {
+      name,
+      speciality,
+      experience,
+      ratings,
+      profilePic
+    };
+    localStorage.setItem('doctorData', JSON.stringify(doctorData));
+    localStorage.removeItem(name);
+
+    // Dispatch cancellation event
+    const event = new Event('appointmentCancelled');
+    window.dispatchEvent(event);
   };
 
   const handleFormSubmit = (appointmentData) => {
@@ -26,6 +40,28 @@ const DoctorCardIC = ({ name, speciality, experience, ratings, profilePic }) => 
     };
     const updatedAppointments = [...appointments, newAppointment];
     setAppointments(updatedAppointments);
+
+    // Save to localStorage
+    const doctorData = {
+      name,
+      speciality,
+      experience,
+      ratings,
+      profilePic
+    };
+    localStorage.setItem('doctorData', JSON.stringify(doctorData));
+    localStorage.setItem(name, JSON.stringify(newAppointment));
+
+    // Dispatch booking event
+    const event = new CustomEvent('appointmentBooked', {
+      detail: {
+        doctorName: name,
+        speciality,
+        appointment: newAppointment
+      }
+    });
+    window.dispatchEvent(event);
+
     setShowModal(false);
   };
 
@@ -33,7 +69,9 @@ const DoctorCardIC = ({ name, speciality, experience, ratings, profilePic }) => 
     <div className="doctor-card-container">
       <div className="doctor-card-details-container">
         <div className="doctor-card-profile-image-container">
-        <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16"> <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/> </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="currentColor" className="bi bi-person-fill" viewBox="0 0 16 16">
+            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+          </svg>
         </div>
         <div className="doctor-card-details">
           <div className="doctor-card-detail-name">{name}</div>
@@ -41,31 +79,18 @@ const DoctorCardIC = ({ name, speciality, experience, ratings, profilePic }) => 
           <div className="doctor-card-detail-experience">{experience} years experience</div>
           <div className="doctor-card-detail-consultationfees">Ratings: {ratings}</div>
         </div>
-        {/* for reference  */}
-        {/* <div>
-              <button className='book-appointment-btn'>                    
-                <div>Book Appointment</div>
-              <div>No Booking Fee</div>
-            </button>
-              </div> */}
       </div>
 
-
       <div className="doctor-card-options-container">
-       <Popup
+        <Popup
           style={{ backgroundColor: '#FFFFFF' }}
           trigger={
             <button
-            className={`book-appointment-btn ${
-                appointments.length > 0 ? 'cancel-appointment-btn' : 'book-appointment-btn'
-            }`}
+              className={`book-appointment-btn ${appointments.length > 0 ? 'cancel-appointment-btn' : 'book-appointment-btn'}`}
+              onClick={handleBooking}
             >
-            {appointments.length > 0 ? (
-                <div>Cancel Appointment</div>
-            ) : (
-                <div>Book Appointment</div>
-            )}
-            <div>No Booking Fee</div>
+              {appointments.length > 0 ? <div>Cancel Appointment</div> : <div>Book Appointment</div>}
+              <div>Instant Consultation</div>
             </button>
           }
           modal
@@ -76,7 +101,9 @@ const DoctorCardIC = ({ name, speciality, experience, ratings, profilePic }) => 
             <div className="doctorbg" style={{ height: '100vh', overflow: 'scroll' }}>
               <div>
                 <div className="doctor-card-profile-image-container">
-                <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16"> <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/> </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="currentColor" className="bi bi-person-fill" viewBox="0 0 16 16">
+                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                  </svg>
                 </div>
                 <div className="doctor-card-details">
                   <div className="doctor-card-detail-name">{name}</div>
@@ -88,12 +115,14 @@ const DoctorCardIC = ({ name, speciality, experience, ratings, profilePic }) => 
 
               {appointments.length > 0 ? (
                 <>
-                  <h3 style={{ textAlign: 'center' }}>Appointment Booked!</h3>
+                  <h3 style={{ textAlign: 'center' }}>Instant Appointment Booked!</h3>
                   {appointments.map((appointment) => (
                     <div className="bookedInfo" key={appointment.id}>
                       <p>Name: {appointment.name}</p>
                       <p>Phone Number: {appointment.phoneNumber}</p>
-                      <button className="cancel-appointment-btn" onClick={() => handleCancel(appointment.id)}>Cancel Appointment</button>
+                      <button className="cancel-appointment-btn" onClick={() => handleCancel(appointment.id)}>
+                        Cancel Appointment
+                      </button>
                     </div>
                   ))}
                 </>
@@ -102,7 +131,7 @@ const DoctorCardIC = ({ name, speciality, experience, ratings, profilePic }) => 
               )}
             </div>
           )}
-        </Popup> 
+        </Popup>
       </div>
     </div>
   );
