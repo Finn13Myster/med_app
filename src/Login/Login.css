@@ -1,0 +1,96 @@
+/* Fonts and body */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f2f2f2;
+  margin: 0;
+  padding: 0;
+}
+
+/* Container to center the login card */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px;
+  margin-top: 5%;
+}
+
+/* Login card styling */
+.login {
+  background-color: #25FFA8;
+  padding: 40px 60px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Heading for login title */
+.login h2 {
+  font-family: 'Kaisei Opti', serif;
+  font-size: 2.5rem;
+  color: #000;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Form layout */
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Each input group */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Input fields */
+.form-control {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Button group */
+.btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 30px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+/* Login button */
+.btn-primary {
+  background-color: #00EB33;
+  color: #fff;
+}
+
+/* Reset button */
+.btn-danger {
+  background-color: #EB0000;
+  color: #fff;
+}
+
+/* Forgot Password section */
+.login-text {
+  font-size: 1rem;
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Signup</title>
+  <link rel="stylesheet" href="./Sign_Up.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Kaisei+Opti&family=Poppins&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="signup">
+      <h1>Sign Up</h1>
+
+      <div style="text-align: center; font-family: 'Poppins', sans-serif; margin-bottom: 20px;">
+        Already a member?
+        <span>
+          <a href="../Login/Login.html" style="color: #2190FF; font-weight: 600; text-decoration: none;">Login</a>
+        </span>
+      </div>
+
+      <form class="signup-form">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" name="name" id="name" required class="form-control" placeholder="Enter your name" />
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="tel" name="phone" id="phone" required class="form-control" placeholder="Enter your phone number" />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" name="email" id="email" required class="form-control" placeholder="Enter your email" />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" required class="form-control" placeholder="Enter your password" />
+        </div>
+
+        <div class="btn-group">
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="reset" class="btn btn-danger">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
