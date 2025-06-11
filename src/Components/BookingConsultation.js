@@ -21,7 +21,6 @@ const BookingConsultation = () => {
                 setFilteredDoctors(filtered);
                 
                 setIsSearched(true);
-                window.reload()
             } else {
                 setFilteredDoctors([]);
                 setIsSearched(false);
@@ -46,16 +45,15 @@ const BookingConsultation = () => {
                 
             setFilteredDoctors(filtered);
             setIsSearched(true);
-            window.location.reload()
         }
     };
     const navigate = useNavigate();
     useEffect(() => {
         getDoctorsDetails();
-        // const authtoken = sessionStorage.getItem("auth-token");
-        // if (!authtoken) {
-        //     navigate("/login");
-        // }
+         const authtoken = sessionStorage.getItem("auth-token");
+         if (!authtoken) {
+             navigate("/login");
+        }
     }, [searchParams])
 
     return (
