@@ -11,6 +11,7 @@ import Notification from './Components/Notification/Notification';
 import ReviewForm from './Components/ReviewForm/ReviewForm';
 import ProfileForm from './Components/ProfileForm/ProfileForm';
 import ReportsLayout from './Components/ReportsLayout/ReportsLayout';
+import AppointmentList from './Components/appointmentList/appointmentList';
 import './App.css';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
                 <Route path="/profile-card" element={<ProfileCard />} />
                 <Route path="/profile" element={<ProfileForm />} />
                 <Route path="/reports" element={<ReportsLayout />} />
+                <Route path="/appointments" element={<AppointmentList />}/>
                 <Route path="/BookingConsultation" element={<BookingConsultation />}/>
                 <Route path="/instant-consultation" element={<InstantConsultation />} />
             </Routes>

@@ -2,13 +2,21 @@ const express = require('express');
 const router = express.Router();
 const Feedback = require('../models/Feedback');
 
-// POST: Submit feedback
-router.post('/', async (req, res) => {
+router.post('/submit', async (req, res) => {
+  const { appointmentId, name, review, rating } = req.body;
+
   try {
-    const newFeedback = new Feedback(req.body);
-    const saved = await newFeedback.save();
-    res.status(201).json(saved);
+    const newFeedback = new Feedback({
+      appointmentId,
+      name,
+      review,
+      rating,
+    });
+
+    await newFeedback.save();
+    res.status(201).json({ message: 'Feedback submitted successfully' });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: 'Failed to submit feedback' });
   }
 });

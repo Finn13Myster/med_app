@@ -11,20 +11,18 @@
     margin-top: 20px;
   }
   
-  .review-table th{
+  .review-table th, .review-table td {
+    border: 1px solid #ccc;
+    padding: 12px;
+    text-align: center;
+  }
+  
+  .review-table th {
     background-color: #00C88F;
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: center;
-
+    color: white;
   }
   
-  .review-table td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: center;
-  }
-  
+  .feedback-btn,
   .feedback-button {
     padding: 8px 14px;
     background-color: #00C88F;
@@ -33,21 +31,28 @@
     border-radius: 4px;
     cursor: pointer;
   }
-
+  
+  .feedback-btn:hover,
   .feedback-button:hover {
     background-color: #008a63;
   }
   
+  .feedback-btn:disabled,
   .feedback-button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
   }
   
+  .modal,
   .feedback-modal {
     padding: 20px;
+    background: #fff;
+    border-radius: 5px;
     width: 400px;
   }
   
+  .modal input,
+  .modal textarea,
   .feedback-form input,
   .feedback-form textarea,
   .feedback-form select {
@@ -55,33 +60,55 @@
     padding: 10px;
     margin-top: 10px;
     font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
   }
   
-  .feedback-form button {
-    padding: 8px 16px;
-    margin-top: 10px;
-    border: none;
-    color: white;
-    border-radius: 4px;
+  .star-rating {
+    display: flex;
+    gap: 5px;
+    margin: 10px 0;
+    font-size: 24px;
     cursor: pointer;
   }
-
-  .btn-success{
-    background-color: #00C88F;
+  
+  .star {
+    color: gray;
+    margin: 0 3px;
   }
-
-  .btn-success:hover{
+  
+  .star.filled {
+    color: gold;
+  }
+  
+  .modal-actions {
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .btn-success {
+    background-color: #00C88F;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+  }
+  
+  .btn-success:hover {
     background-color: #007e5a;
   }
-
-  .btn-cancel{
+  
+  .btn-cancel {
     background-color: #e00000;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
   }
-
-  .btn-cancel:hover{
+  
+  .btn-cancel:hover {
     background-color: #b60000;
   }
-
   
   .submitted-review-box {
     border: 2px solid red;
@@ -89,20 +116,9 @@
     border-radius: 6px;
     background-color: #ffe6e6;
   }
-
-  .star-rating {
-  font-size: 24px;
-  color: #ccc;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.star {
-  margin: 0 3px;
-}
-
-.star.filled {
-  color: gold;
-}
-
+  
+  .submitted {
+    color: green;
+    font-weight: bold;
+  }
   

@@ -30,14 +30,15 @@ router.delete('/cancel/:id', async (req, res) => {
   
 
 // GET: Get Appointments by doctor
-router.get('/by-doctor', async (req, res) => {
+router.get('/user', async (req, res) => {
+  const email = req.headers['email'];
   try {
-    const { doctorName, doctorSpeciality } = req.query;
-    const appts = await Appointment.find({ doctorName, doctorSpeciality });
-    res.json(appts);
+    const appointments = await Appointment.find({ email }); // filter by email
+    res.json(appointments);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch appointments' });
+    res.status(500).json({ error: 'Failed to fetch user appointments' });
   }
 });
+
 
 module.exports = router;

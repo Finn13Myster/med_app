@@ -29,33 +29,38 @@ const DoctorCard = ({ name, speciality, experience, ratings, profilePic }) => {
     }
   };
 
-  const handleFormSubmit = async (appointmentData) => {
-    const newAppointment = {
-      id: uuidv4(),
-      ...appointmentData,
-      doctorName: name,
-      doctorSpeciality: speciality,
-    };
+const handleFormSubmit = async (appointmentData) => {
+  const email = sessionStorage.getItem("email");
 
-    try {
-      const response = await fetch(`${API_URL}/api/appointments/book`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newAppointment),
-      });
-
-      if (response.ok) {
-        setAppointments([newAppointment]);
-        const event = new CustomEvent('appointmentBooked', {
-          detail: { doctorName: name, speciality, appointment: newAppointment }
-        });
-        window.dispatchEvent(event);
-        setShowModal(false);
-      }
-    } catch (err) {
-      console.error('Error saving appointment:', err);
-    }
+  const newAppointment = {
+    id: uuidv4(),
+    ...appointmentData,
+    doctorName: name,
+    doctorSpeciality: speciality,
+    email,
+    type: 'booking',
   };
+
+  try {
+    const response = await fetch(`${API_URL}/api/appointments/book`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newAppointment),
+    });
+
+    if (response.ok) {
+      setAppointments([newAppointment]);
+      const event = new CustomEvent('appointmentBooked', {
+        detail: { doctorName: name, speciality, appointment: newAppointment }
+      });
+      window.dispatchEvent(event);
+      setShowModal(false);
+    }
+  } catch (error) {
+    console.error("Error saving appointment:", error);
+  }
+};
+
 
   return (
     <div className="doctor-card-container">

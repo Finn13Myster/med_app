@@ -1,0 +1,37 @@
+.appointment-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    text-align: left;
+  }
+  
+  .appointment-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .appointment-table th,
+  .appointment-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .appointment-table th {
+    background-color: #00C88F;
+    color: white;
+  }
+  
+  .cancel-btn {
+    padding: 6px 12px;
+    background-color: #e63946;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .cancel-btn:hover {
+    background-color: #c53034;
+  }
+  

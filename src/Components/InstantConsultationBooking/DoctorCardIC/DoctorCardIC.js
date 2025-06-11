@@ -33,20 +33,24 @@ const DoctorCardIC = ({ name, speciality, experience, ratings, profilePic }) => 
   };
 
   const handleFormSubmit = async (appointmentData) => {
+    const email = sessionStorage.getItem("email");
+  
     const newAppointment = {
       id: uuidv4(),
       ...appointmentData,
       doctorName: name,
-      speciality,
+      doctorSpeciality: speciality,
+      email,
+      type: 'instant',
     };
-
+  
     try {
-        const response = await fetch(`${API_URL}/api/appointments/book`, {
+      const response = await fetch(`${API_URL}/api/appointments/book`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newAppointment),
       });
-
+  
       if (response.ok) {
         setAppointments([newAppointment]);
         const event = new CustomEvent('appointmentBooked', {
@@ -59,6 +63,7 @@ const DoctorCardIC = ({ name, speciality, experience, ratings, profilePic }) => 
       console.error("Error saving appointment:", error);
     }
   };
+  
 
   return (
     <div className="doctor-card-container">
