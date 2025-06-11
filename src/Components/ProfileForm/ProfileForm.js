@@ -80,6 +80,9 @@ const ProfileForm = () => {
     <div className="profile-container">
       {editMode ? (
         <form onSubmit={handleSubmit}>
+            <div className="edit-profile">
+                <h3>Edit Profile</h3>
+            </div>
           <label>
             Email
             <input type="email" name="email" value={userDetails.email} disabled />

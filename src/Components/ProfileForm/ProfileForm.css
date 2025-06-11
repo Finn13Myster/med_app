@@ -5,6 +5,11 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.edit-profile{
+    text-align: center;
 }
 
 .profile-container label {
@@ -23,12 +28,20 @@
   text-align: center;
 }
 
-.save-btn, 
+.save-btn{
+    background-color: #03ff9a;
+} 
+
 .edit-btn {
     background-color: #03ff9a;
+    width: 80%;
 }
 
-.save-btn:hover,
+.save-btn:hover{
+    background-color: #03ff9a;
+} 
+
 .edit-btn:hover {
     background-color: #01af6a;
+    width: 80%;
 }
