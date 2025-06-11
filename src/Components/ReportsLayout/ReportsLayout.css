@@ -1,0 +1,50 @@
+.reports-container {
+    padding: 20px;
+    background: #fdfdfd;
+    text-align: left;
+  }
+  
+  .reports-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 100%;
+  }
+  
+  .reports-table th{
+    background-color: #00C88F;
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+
+  .reports-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .btn-view {
+    padding: 6px 12px;
+    background-color: #2e86de;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto;
+  }
+  
+  .btn-download {
+    background-color: #28a745;
+    padding: 6px 12px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto;
+  }
+
+  .btn-download:hover {
+    background-color: #207e36;
+  }
+  
+  

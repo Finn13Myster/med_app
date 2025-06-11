@@ -76,6 +76,11 @@ const ProfileForm = () => {
     }
   };
 
+  const handleCancel = () => {
+    setUpdatedDetails(userDetails); // reset changes
+    setEditMode(false);             // exit edit mode
+  };
+
   return (
     <div className="profile-container">
       {editMode ? (
@@ -95,14 +100,15 @@ const ProfileForm = () => {
             Phone
             <input type="text" name="phone" value={updatedDetails.phone} onChange={handleInputChange} />
           </label>
-          <button type="submit" className="save-btn">Save</button>
+          <button type="submit" className="save-btn">Save <i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+          <button type="button" className="cancel-btn" onClick={handleCancel}>cancel <i class="fa fa-times-circle" aria-hidden="true"></i></button>
         </form>
       ) : (
         <div className="profile-details">
           <h1>Welcome, {userDetails.name}</h1>
           <p><b>Email:</b> {userDetails.email}</p>
           <p><b>Phone:</b> {userDetails.phone}</p>
-          <button className="edit-btn" onClick={handleEdit}>Edit</button>
+          <button className="edit-btn" onClick={handleEdit}>Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
         </div>
       )}
     </div>

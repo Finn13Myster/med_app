@@ -16,13 +16,18 @@ router.post('/book', async (req, res) => {
 
 // Cancel appointment
 router.delete('/cancel/:id', async (req, res) => {
-  try {
-    await Appointment.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: 'Appointment cancelled' });
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to cancel appointment' });
-  }
-});
+    try {
+      const result = await Appointment.findOneAndDelete({ id: req.params.id }); // match using custom "id" field
+      if (!result) {
+        return res.status(404).json({ error: "Appointment not found" });
+      }
+      res.status(200).json({ message: 'Appointment cancelled successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Failed to cancel appointment' });
+    }
+  });
+  
 
 // GET: Get Appointments by doctor
 router.get('/by-doctor', async (req, res) => {

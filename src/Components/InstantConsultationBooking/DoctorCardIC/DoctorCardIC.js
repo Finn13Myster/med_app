@@ -4,6 +4,7 @@ import 'reactjs-popup/dist/index.css';
 import './DoctorCardIC.css';
 import AppointmentFormIC from '../AppointmentFormIC/AppointmentFormIC';
 import { v4 as uuidv4 } from 'uuid';
+import { API_URL } from '../../../config';
 
 const DoctorCardIC = ({ name, speciality, experience, ratings, profilePic }) => {
   const [showModal, setShowModal] = useState(false);
@@ -15,7 +16,7 @@ const DoctorCardIC = ({ name, speciality, experience, ratings, profilePic }) => 
 
   const handleCancel = async (appointmentId) => {
     try {
-      const response = await fetch(`/api/appointments/cancel/${appointmentId}`, {
+      const response = await fetch(`${API_URL}/api/appointments/cancel/${appointmentId}`, {
         method: 'DELETE',
       });
 
@@ -40,7 +41,7 @@ const DoctorCardIC = ({ name, speciality, experience, ratings, profilePic }) => 
     };
 
     try {
-      const response = await fetch('/api/appointments/book', {
+        const response = await fetch(`${API_URL}/api/appointments/book`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newAppointment),

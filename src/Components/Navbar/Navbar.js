@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+// src/Components/Navbar/Navbar.js
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./navbar.css";
 import logo from "./Logo.png";
+import ProfileCard from "../ProfileCard/ProfileCard"; // Import modular dropdown
 
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
-  const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,16 +22,6 @@ function Navbar() {
     } else {
       setUsername("");
     }
-  }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowDropdown(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleLogout = () => {
@@ -57,28 +48,14 @@ function Navbar() {
 
         {!isLoggedIn ? (
           <>
-            <li className="link"><Link to="/signup"><button className="btn1">Sign Up</button></Link></li>
-            <li className="link"><Link to="/login"><button className="btn1">Login</button></Link></li>
+            <li className="link"><Link to="/signup"><button className="btn1">Sign Up <i class="fa fa-user-plus" aria-hidden="true"></i></button></Link></li>
+            <li className="link"><Link to="/login"><button className="btn1">Login <i class="fa fa-sign-in" aria-hidden="true"></i></button></Link></li>
           </>
         ) : (
           <>
-            <li className="link profile-dropdown-container" ref={dropdownRef}>
-              <span
-                className="username-display"
-                onClick={() => setShowDropdown((prev) => !prev)}
-              >
-                Welcome, {username}
-              </span>
-              {showDropdown && (
-                <div className="profile-dropdown-card">
-                    <h3>Your Profile</h3>
-                  <Link to="/profile"><div className="dropdown-item">Your Profile</div></Link>
-                  <Link to="/reports"><div className="dropdown-item">Your Reports</div></Link>
-                </div>
-              )}
-            </li>
+            <ProfileCard username={username} showDropdown={showDropdown} setShowDropdown={setShowDropdown} />
             <li className="link">
-              <button className="btn1" onClick={handleLogout}>Logout</button>
+              <button className="btn1" onClick={handleLogout}>Logout <i class="fa fa-sign-out" aria-hidden="true"></i></button>
             </li>
           </>
         )}
