@@ -13,56 +13,50 @@ const DoctorCardIC = ({ name, speciality, experience, ratings, profilePic }) => 
     setShowModal(true);
   };
 
-  const handleCancel = (appointmentId) => {
-    const updatedAppointments = appointments.filter((appointment) => appointment.id !== appointmentId);
-    setAppointments(updatedAppointments);
+  const handleCancel = async (appointmentId) => {
+    try {
+      const response = await fetch(`/api/appointments/cancel/${appointmentId}`, {
+        method: 'DELETE',
+      });
 
-    // Remove from localStorage
-    const doctorData = {
-      name,
-      speciality,
-      experience,
-      ratings,
-      profilePic
-    };
-    localStorage.setItem('doctorData', JSON.stringify(doctorData));
-    localStorage.removeItem(name);
+      if (response.ok) {
+        const updatedAppointments = appointments.filter(a => a.id !== appointmentId);
+        setAppointments(updatedAppointments);
 
-    // Dispatch cancellation event
-    const event = new Event('appointmentCancelled');
-    window.dispatchEvent(event);
+        const event = new Event('appointmentCancelled');
+        window.dispatchEvent(event);
+      }
+    } catch (err) {
+      console.error("Error cancelling appointment:", err);
+    }
   };
 
-  const handleFormSubmit = (appointmentData) => {
+  const handleFormSubmit = async (appointmentData) => {
     const newAppointment = {
       id: uuidv4(),
       ...appointmentData,
-    };
-    const updatedAppointments = [...appointments, newAppointment];
-    setAppointments(updatedAppointments);
-
-    // Save to localStorage
-    const doctorData = {
-      name,
+      doctorName: name,
       speciality,
-      experience,
-      ratings,
-      profilePic
     };
-    localStorage.setItem('doctorData', JSON.stringify(doctorData));
-    localStorage.setItem(name, JSON.stringify(newAppointment));
 
-    // Dispatch booking event
-    const event = new CustomEvent('appointmentBooked', {
-      detail: {
-        doctorName: name,
-        speciality,
-        appointment: newAppointment
+    try {
+      const response = await fetch('/api/appointments/book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newAppointment),
+      });
+
+      if (response.ok) {
+        setAppointments([newAppointment]);
+        const event = new CustomEvent('appointmentBooked', {
+          detail: { doctorName: name, speciality, appointment: newAppointment }
+        });
+        window.dispatchEvent(event);
+        setShowModal(false);
       }
-    });
-    window.dispatchEvent(event);
-
-    setShowModal(false);
+    } catch (error) {
+      console.error("Error saving appointment:", error);
+    }
   };
 
   return (
@@ -83,14 +77,13 @@ const DoctorCardIC = ({ name, speciality, experience, ratings, profilePic }) => 
 
       <div className="doctor-card-options-container">
         <Popup
-          style={{ backgroundColor: '#FFFFFF' }}
           trigger={
             <button
               className={`book-appointment-btn ${appointments.length > 0 ? 'cancel-appointment-btn' : 'book-appointment-btn'}`}
               onClick={handleBooking}
             >
               {appointments.length > 0 ? <div>Cancel Appointment</div> : <div>Book Appointment</div>}
-              <div>Instant Consultation</div>
+              <div>No Booking Fee</div>
             </button>
           }
           modal
@@ -99,23 +92,21 @@ const DoctorCardIC = ({ name, speciality, experience, ratings, profilePic }) => 
         >
           {(close) => (
             <div className="doctorbg" style={{ height: '100vh', overflow: 'scroll' }}>
-              <div>
-                <div className="doctor-card-profile-image-container">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="currentColor" className="bi bi-person-fill" viewBox="0 0 16 16">
-                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-                  </svg>
-                </div>
-                <div className="doctor-card-details">
-                  <div className="doctor-card-detail-name">{name}</div>
-                  <div className="doctor-card-detail-speciality">{speciality}</div>
-                  <div className="doctor-card-detail-experience">{experience} years experience</div>
-                  <div className="doctor-card-detail-consultationfees">Ratings: {ratings}</div>
-                </div>
+              <div className="doctor-card-profile-image-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="currentColor" className="bi bi-person-fill" viewBox="0 0 16 16">
+                  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                </svg>
+              </div>
+              <div className="doctor-card-details">
+                <div className="doctor-card-detail-name">{name}</div>
+                <div className="doctor-card-detail-speciality">{speciality}</div>
+                <div className="doctor-card-detail-experience">{experience} years experience</div>
+                <div className="doctor-card-detail-consultationfees">Ratings: {ratings}</div>
               </div>
 
               {appointments.length > 0 ? (
                 <>
-                  <h3 style={{ textAlign: 'center' }}>Instant Appointment Booked!</h3>
+                  <h3 style={{ textAlign: 'center' }}>Appointment Booked!</h3>
                   {appointments.map((appointment) => (
                     <div className="bookedInfo" key={appointment.id}>
                       <p>Name: {appointment.name}</p>
